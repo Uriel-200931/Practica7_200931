@@ -7,103 +7,144 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final double iconSize = 40.0; // Tamaño del icono
   // Estilo de fuente personalizado
   final TextStyle customTextStyle = TextStyle(
     fontFamily: 'MiFuente', // Nombre de la fuente definido en pubspec.yaml
-    fontSize: 16.0, // Tamaño de fuente deseado
+    fontSize: 22.0, // Tamaño de fuente deseado
     fontWeight: FontWeight
         .bold, // Puedes ajustar el peso de la fuente según tus preferencias
   );
 
   @override
   Widget build(BuildContext context) {
-    // Crear una página Scaffold que contiene la estructura principal de la aplicación
-    return new Scaffold(
-      appBar: new AppBar(
-        // Barra de navegación superior (AppBar) con un título y un botón de búsqueda
-        title: new Text("MovieApp-200931"), // Título de la aplicación
-        actions: <Widget>[
-          new IconButton(
-            icon: new Icon(
-              Icons.search,
-              color: Colors.white,
+    // Crear un tema personalizado para la aplicación
+    final ThemeData appTheme = ThemeData.dark().copyWith(
+      primaryColor:
+          Color.fromARGB(255, 214, 19, 165), // Color azul para la AppBar
+      scaffoldBackgroundColor:
+          Color.fromARGB(255, 46, 44, 44), // Fondo negro del cuerpo
+      canvasColor: Color.fromARGB(255, 0, 0, 0), // Fondo oscuro del Drawer
+    );
+
+    // Aplicar el tema personalizado a la aplicación
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 179, 8, 93),
+          // Barra de navegación superior (AppBar) con un título y un botón de búsqueda
+          title: Text("MovieApp-200931"), // Título de la aplicación
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // Acción a ejecutar cuando se presiona el botón de búsqueda
+              },
             ),
-            onPressed: () {
-              // Acción a ejecutar cuando se presiona el botón de búsqueda
-            },
+          ],
+        ),
+        drawer: Drawer(
+          // Menú lateral (Drawer) que se despliega desde el borde izquierdo
+          child: ListView(
+            children: <Widget>[
+              new DrawerHeader(
+                child: Center(
+                  child: Text(
+                    '',
+                    style: TextStyle(
+                      color: Colors.black38,
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/icono.png'),
+                        fit: BoxFit.cover)),
+              ), // Elemento del menú "peliculas"
+              ListTile(
+                title: Text(
+                  "Peliculas",
+                  style: customTextStyle.copyWith(
+                      color: Colors.white), // Texto en blanco
+                ),
+                trailing: Image.asset(
+                  "assets/1.png", // Ruta de la imagen para películas en assets
+                  width: iconSize,
+                  height: iconSize,
+                ),
+              ),
+
+              // Separador en el menú
+              Divider(
+                height: 5.0,
+                color: Colors.white, // Línea de separación en blanco
+              ),
+
+              // Elemento del menú "Television"
+              ListTile(
+                title: Text(
+                  "Television",
+                  style: customTextStyle.copyWith(
+                      color: Colors.white), // Texto en blanco
+                ),
+                trailing: Image.asset(
+                  "assets/2.png", // Ruta de la imagen para televisión en assets
+                  width: iconSize,
+                  height: iconSize,
+                ),
+              ),
+
+              // Separador en el menú
+              Divider(
+                height: 5.0,
+                color: Colors.white, // Línea de separación en blanco
+              ),
+
+              // Elemento del menú "Cerrar"
+              ListTile(
+                title: Text(
+                  "Cerrar",
+                  style: customTextStyle.copyWith(
+                      color: Colors.white), // Texto en blanco
+                ),
+                trailing: Image.asset(
+                  "assets/3.png", // Ruta de la imagen para cerrar en assets
+                  width: iconSize,
+                  height: iconSize,
+                ),
+                onTap: () => Navigator.of(context).pop(),
+              ),
+            ],
           ),
-        ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          // Barra de navegación inferior (BottomNavigationBar) con iconos y etiquetas
+          items: _obtenerIconos(),
+        ),
       ),
-      drawer: new Drawer(
-        // Menú lateral (Drawer) que se despliega desde el borde izquierdo
-        child: new ListView(children: <Widget>[
-          new DrawerHeader(
-              child: new Material()), // Encabezado del menú lateral
-
-          // Elemento del menú "peliculas"
-          new ListTile(
-            title: new Text(
-              "peliculas",
-              style:
-                  customTextStyle, // Aplica el estilo de fuente personalizado
-            ),
-            trailing: new Icon(Icons.local_movies), // Icono de películas
-          ),
-
-          // Separador en el menú
-          new Divider(
-            height: 5.0,
-          ),
-
-          // Elemento del menú "Television"
-          new ListTile(
-            title: new Text(
-              "Television",
-              style:
-                  customTextStyle, // Aplica el estilo de fuente personalizado
-            ),
-            trailing: new Icon(Icons.live_tv), // Icono de televisión
-          ),
-
-          // Separador en el menú
-          new Divider(
-            height: 5.0,
-          ),
-
-          // Elemento del menú "Cerrar"
-          new ListTile(
-            title: new Text(
-              "Cerrar",
-              style:
-                  customTextStyle, // Aplica el estilo de fuente personalizado
-            ),
-            trailing: new Icon(Icons.live_tv), // Icono de televisión
-            onTap: () => Navigator.of(context)
-                .pop(), // Cierra el menú al tocar este elemento
-          ),
-        ]),
-      ),
-      bottomNavigationBar: new BottomNavigationBar(
-        // Barra de navegación inferior (BottomNavigationBar) con iconos y etiquetas
-        items: _obtenerIconos(),
-      ),
+      theme: appTheme, // Aplicar el tema personalizado aquí
     );
   }
 
   // Método para obtener los elementos de la barra de navegación inferior
   List<BottomNavigationBarItem> _obtenerIconos() {
     return [
-      new BottomNavigationBarItem(
-        icon: new Icon(Icons.thumb_up), // Icono de pulgar hacia arriba
-        label: ("populares"), // Etiqueta para la opción "populares"
+      BottomNavigationBarItem(
+        icon: Icon(Icons.thumb_up), // Icono de pulgar hacia arriba
+        label: "populares", // Etiqueta para la opción "populares"
       ),
-      new BottomNavigationBarItem(
-        icon: new Icon(Icons.update), // Icono de actualización
-        label: ("Proximamente"), // Etiqueta para la opción "Proximamente"
+      BottomNavigationBarItem(
+        icon: Icon(Icons.update), // Icono de actualización
+        label: "Proximamente", // Etiqueta para la opción "Proximamente"
       ),
-      new BottomNavigationBarItem(
-        icon: new Icon(Icons.star), // Icono de estrella
-        label: ("Mejor valorados"), // Etiqueta para la opción "Mejor valorados"
+      BottomNavigationBarItem(
+        icon: Icon(Icons.star), // Icono de estrella
+        label: "Mejor valorados", // Etiqueta para la opción "Mejor valorados"
       ),
     ];
   }
